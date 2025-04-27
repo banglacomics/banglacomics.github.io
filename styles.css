@@ -56,7 +56,7 @@ h1 {
 /* Mobile responsiveness */
 @media (max-width: 600px) {
     .banner {
-        font-size: 1.8em; /* smaller font on small screens */
+        font-size: .8em; /* smaller font on small screens */
         padding: 15px 8px;
     }
 }
