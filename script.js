@@ -7,21 +7,15 @@ fetch('./images.json')
             const card = document.createElement('div');
             card.className = 'card';
 
-            const img = document.createElement('img');
-            img.src = item.src;
-            img.alt = item.title;
-
-            const title = document.createElement('h2');
-            title.textContent = item.title;
-
-            const info = document.createElement('p');
-            info.textContent = item.info;
-
-            card.appendChild(img);
-            card.appendChild(title);
-            card.appendChild(info);
+            card.innerHTML = `
+                <a href="${item.url}">
+                    <img src="${item.src}" alt="${item.title}">
+                </a>
+                <h3>${item.title}</h3>
+                <p>${item.description}</p>
+            `;
 
             gallery.appendChild(card);
         });
     })
-    .catch(error => console.error('Error loading images:', error));
+    .catch(error => console.error('Error loading images:', error)); 
