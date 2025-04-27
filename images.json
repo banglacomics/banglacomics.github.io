@@ -1,14 +1,14 @@
 [
     {
         "src": "images/logo/Diamond Comics Bangla.jpg",
-        "title": "Diamond Comics",
-        "info": " ",
+        "title": "ডায়মন্ড কমিক্স",
+        "info": "Diamond Comics",
         "url": "diamondcomics.html"
     },
     {
         "src": "images/logo/Indrajal Comics.jpg",
-        "title": "Indrajal Comics",
-        "info": " ",
+        "title": "ইন্দ্রজাল কমিক্স",
+        "info": "Indrajal Comics",
         "url": "indrajalcomics.html"
     }
 ]
