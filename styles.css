@@ -40,7 +40,7 @@ h1 {
 }
 
 .banner {
-    background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%); /* dark background */
+    background: linear-gradient(144deg, #608ef7 0%, #061a40 100%) /* dark background */
     color: #fff;            /* white text */
     padding: 30px 20px;
     text-align: center;
