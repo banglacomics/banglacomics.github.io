@@ -40,7 +40,7 @@ h1 {
 }
 
 .banner {
-    background-color: #222; /* dark background */
+    background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%); /* dark background */
     color: #fff;            /* white text */
     padding: 30px 20px;
     text-align: center;
@@ -51,4 +51,12 @@ h1 {
 	position: sticky;
 	top: 0;
 	z-index: 1000;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+    .banner {
+        font-size: 1.8em; /* smaller font on small screens */
+        padding: 15px 8px;
+    }
 }
