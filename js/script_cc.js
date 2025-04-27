@@ -1,4 +1,4 @@
-fetch('../image_cc.json')
+fetch('../data/image_cc.json')
     .then(response => response.json())
     .then(data => {
         const gallery = document.getElementById('gallery');
