@@ -10,9 +10,10 @@ fetch('./images.json')
             card.innerHTML = `
                 <a href="${item.url}">
                     <img src="${item.src}" alt="${item.title}">
+                    <h3>${item.title}</h3>
+                    <p>${item.info}</p>
                 </a>
-                <h3>${item.title}</h3>
-                <p>${item.info}</p>
+
             `;
 
             gallery.appendChild(card);
