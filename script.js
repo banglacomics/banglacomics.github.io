@@ -12,7 +12,7 @@ fetch('./images.json')
                     <img src="${item.src}" alt="${item.title}">
                 </a>
                 <h3>${item.title}</h3>
-                <p>${item.description}</p>
+                <p>${item.info}</p>
             `;
 
             gallery.appendChild(card);
