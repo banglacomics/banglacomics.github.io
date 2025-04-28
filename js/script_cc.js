@@ -1,6 +1,9 @@
-fetch('../data/image_cc.json')
-    .then(response => response.json())
-    .then(data => {
+fetch('../data/cc_data')
+    .then(response => response.text())  // Read as plain text
+    .then(encodedData => {
+        const decodedData = atob(encodedData);   // Decode Base64 string
+        const data = JSON.parse(decodedData);     // Parse the JSON
+
         const gallery = document.getElementById('gallery');
 
         data.forEach(item => {
@@ -24,4 +27,4 @@ fetch('../data/image_cc.json')
             gallery.appendChild(card);
         });
     })
-    .catch(error => console.error('Error loading images:', error));
+    .catch(error => console.error('Error loading data:', error));
