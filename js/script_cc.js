@@ -1,10 +1,23 @@
 function decodeBase64Unicode(str) {
-    // Decode Base64 to bytes
-    const binaryString = atob(str);
-    // Convert bytes to a properly escaped UTF-8 string
-    const bytes = Uint8Array.from(binaryString, c => c.charCodeAt(0));
-    const decoded = new TextDecoder('utf-8').decode(bytes);
-    return decoded;
+    // Fix: Replace URL-safe characters if necessary (optional step if your Base64 is standard)
+    str = str.replace(/-/g, '+').replace(/_/g, '/');
+
+    // Fix: Add missing padding (if needed)
+    while (str.length % 4 !== 0) {
+        str += '=';
+    }
+
+    // Decode base64 and then URI-decode
+    try {
+        return decodeURIComponent(
+            Array.prototype.map.call(atob(str), function (c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join('')
+        );
+    } catch (e) {
+        console.error("Decoding error:", e);
+        return null;
+    }
 }
 
 fetch('../data/cc_data')
