@@ -1,7 +1,16 @@
+function decodeBase64Unicode(str) {
+    // Decode Base64 to bytes
+    const binaryString = atob(str);
+    // Convert bytes to a properly escaped UTF-8 string
+    const bytes = Uint8Array.from(binaryString, c => c.charCodeAt(0));
+    const decoded = new TextDecoder('utf-8').decode(bytes);
+    return decoded;
+}
+
 fetch('../data/cc_data')
     .then(response => response.text())  // Read as plain text
     .then(encodedData => {
-        const decodedData = atob(encodedData);   // Decode Base64 string
+        const decodedData = decodeBase64Unicode(encodedData);   // Decode Base64 string
         const data = JSON.parse(decodedData);     // Parse the JSON
 
         const gallery = document.getElementById('gallery');
