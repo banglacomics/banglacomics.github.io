@@ -42,7 +42,7 @@ fetch('../data/cc_data')
 
                 card.appendChild(img);
                 card.appendChild(title);
-                card.appendChild(info);
+               // card.appendChild(info);
 
                 card.addEventListener('click', () => {
                     modalImg.src = item.src;
