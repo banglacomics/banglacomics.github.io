@@ -9,16 +9,32 @@
     <link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@400..800&family=Hind+Siliguri:wght@300;400;500;600;700&family=Noto+Sans+Bengali:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body>
-
     <header class="banner">
         <h1 style="margin-block-end: 0.3em; margin-block-start: 0.3em;">ডায়মন্ড কমিক্স</h1>
         <a href="../index.html" class="home-button" style="float: right; margin-top: -45px; color: beige;"><i class="fas fa-home"></i></a>
     </header>
-<div class="gallery" id="gallery"></div>
-    <div class="details-content" style="text-align: center; margin-top: 50px;">
-            <script src="../js/script_cc.js"></script>
+
+    <div style="text-align:center; margin: 20px;">
+        <label for="typeFilter">ফিল্টার করুন: </label>
+        <select id="typeFilter">
+            <option value="all">সব</option>
+        </select>
     </div>
 
+    <div class="gallery" id="gallery"></div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span id="closeModal" class="close">&times;</span>
+            <img id="modalImg" src="" alt="" style="max-width:100%; height:auto;">
+            <h2 id="modalTitle"></h2>
+            <p id="modalInfo"></p>
+            <ul id="modalStories"></ul>
+        </div>
+    </div>
+
+    <script src="../js/script_cc.js"></script>
 </body>
 </html>
 
