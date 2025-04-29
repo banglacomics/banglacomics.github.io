@@ -101,8 +101,9 @@ a {
 .modal-content {
     background-color: #fff;
     padding: 20px;
-    width: 80%;
-    max-width: 600px;
+    width: 50vw;
+    max-width: 70vw;
+    max-height: 70vh;
     border-radius: 10px;
     text-align: center;
     font-family: 'Noto Sans Bengali', sans-serif;
