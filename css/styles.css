@@ -107,18 +107,66 @@ a {
     border-radius: 10px;
     text-align: center;
     font-family: 'Noto Sans Bengali', sans-serif;
+
 }
 
+.modal-display {
+		display:flex;
+}
 .close {
     float: right;
     font-size: 28px;
     cursor: pointer;
 }
 
+	
+	.modal-content img  {
+		
+		max-width: 40vw;
+		height: 50vh;
+		padding: 20px;
+		
+	}
+	.paading-left-5  {
+		padding-left: 5vw;
+	}
+	
+	.modal-content ul {
+		text-align: left; 
+		min-height: 20vh;
+		
+	}
+	
+	.tablecontent {
+		text-align: left; 
+	}
+		
+	
 /* Mobile responsiveness */
 @media (max-width: 600px) {
     .banner {
         font-size: .8em; /* smaller font on small screens */
         padding: 15px 8px;
     }
+	
+	.modal-content img {
+		
+		max-width: 50vw;
+        height: 30vh;
+        padding: 10px;
+	}
+	
+	.modal-content  {
+		width : 70vw;
+		overflow: scroll
+	}
+	
+	.modal-display {
+		display:grid;
+		align-content: center;
+		padding-top: 30px;
+	}
+	
+
+	
 }
