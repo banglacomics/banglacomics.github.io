@@ -12,9 +12,13 @@ fetch('../data/cc_data')
         const modalInfo = document.getElementById('modalInfo');
         const modalStories = document.getElementById('modalStories');
 
-        // Populate filter options dynamically
-        const types = new Set(data.map(item => item.type));
-        types.forEach(type => {
+        // Build unique set of all types from comma-separated strings
+        const allTypes = new Set();
+        data.forEach(item => {
+            item.type.split(',').forEach(t => allTypes.add(t.trim()));
+        });
+
+        allTypes.forEach(type => {
             const option = document.createElement('option');
             option.value = type;
             option.textContent = type;
@@ -22,8 +26,12 @@ fetch('../data/cc_data')
         });
 
         function renderGallery(filter = 'all') {
-            gallery.innerHTML = ''; // Clear current gallery
-            const filteredData = filter === 'all' ? data : data.filter(item => item.type === filter);
+            gallery.innerHTML = '';
+            const filteredData = filter === 'all' 
+                ? data 
+                : data.filter(item => 
+                    item.type.split(',').map(t => t.trim()).includes(filter)
+                  );
 
             filteredData.forEach(item => {
                 const card = document.createElement('div');
@@ -37,18 +45,18 @@ fetch('../data/cc_data')
                 const title = document.createElement('h2');
                 title.textContent = item.title;
 
-               // const info = document.createElement('p');
-               // info.textContent = item.info;
+                const info = document.createElement('p');
+                info.textContent = item.info;
 
                 card.appendChild(img);
                 card.appendChild(title);
-               // card.appendChild(info);
+                card.appendChild(info);
 
                 card.addEventListener('click', () => {
                     modalImg.src = item.src;
                     modalTitle.textContent = item.title;
                     modalInfo.textContent = item.info;
-                    modalStories.innerHTML = ''; // Clear previous
+                    modalStories.innerHTML = '';
 
                     item.story.split(',').forEach(story => {
                         const li = document.createElement('li');
@@ -75,6 +83,6 @@ fetch('../data/cc_data')
             renderGallery(typeFilter.value);
         });
 
-        renderGallery(); // Initial render
+        renderGallery(); // Initial display
     })
     .catch(error => console.error('Error loading data:', error));
