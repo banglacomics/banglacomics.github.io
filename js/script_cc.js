@@ -83,6 +83,19 @@ fetch('../data/cc_data')
             renderGallery(typeFilter.value);
         });
 
-        renderGallery(); // Initial display
+        //renderGallery(); // Initial display
+
+        // Helper to get filter from URL
+        function getFilterFromPath() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('filter') || 'all';
+        }
+
+        // Apply filter from path if exists
+        const initialFilter = getFilterFromPath();
+
+        // Wait for dropdown to be populated before setting value
+        typeFilter.value = initialFilter;
+        renderGallery(initialFilter);
     })
     .catch(error => console.error('Error loading data:', error));
