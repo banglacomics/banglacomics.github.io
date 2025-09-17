@@ -39,10 +39,11 @@ fetch('../data/cc_data')
             // Apply search filter
             if (searchTerm) {
                 const term = searchTerm.toLowerCase();
-                filteredData = filteredData.filter(item =>
-                    item.title.toLowerCase().includes(term) ||
-                    item.story.toLowerCase().includes(term)
-                );
+                    filteredData = filteredData.filter(item => {
+                        const title = (item.title || "").toLowerCase();
+                        const story = (item.story || "").toLowerCase();
+                        return title.includes(term) || story.includes(term);
+                    });
             }
 
             if (filteredData.length === 0) {
