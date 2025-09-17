@@ -5,6 +5,7 @@ fetch('../data/cc_data')
         const data = JSON.parse(decodedData);
         const gallery = document.getElementById('gallery');
         const typeFilter = document.getElementById('typeFilter');
+        const searchInput = document.getElementById('searchInput');
         const modal = document.getElementById('modal');
         const closeModal = document.getElementById('closeModal');
         const modalImg = document.getElementById('modalImg');
@@ -12,7 +13,7 @@ fetch('../data/cc_data')
         const modalInfo = document.getElementById('modalInfo');
         const modalStories = document.getElementById('modalStories');
 
-        // Build unique set of all types from comma-separated strings
+        // Build unique set of all types
         const allTypes = new Set();
         data.forEach(item => {
             item.type.split(',').forEach(t => allTypes.add(t.trim()));
@@ -25,13 +26,28 @@ fetch('../data/cc_data')
             typeFilter.appendChild(option);
         });
 
-        function renderGallery(filter = 'all') {
+        function renderGallery(filter = 'all', searchTerm = '') {
             gallery.innerHTML = '';
-            const filteredData = filter === 'all' 
+
+            let filteredData = filter === 'all' 
                 ? data 
                 : data.filter(item => 
                     item.type.split(',').map(t => t.trim()).includes(filter)
                   );
+
+            // Apply search filter (check in title + story)
+            if (searchTerm) {
+                const term = searchTerm.toLowerCase();
+                filteredData = filteredData.filter(item =>
+                    item.title.toLowerCase().includes(term) ||
+                    item.story.toLowerCase().includes(term)
+                );
+            }
+
+            if (filteredData.length === 0) {
+                gallery.innerHTML = '<p style="text-align:center;">কোন ফলাফল পাওয়া যায়নি</p>';
+                return;
+            }
 
             filteredData.forEach(item => {
                 const card = document.createElement('div');
@@ -80,21 +96,15 @@ fetch('../data/cc_data')
         };
 
         typeFilter.addEventListener('change', () => {
-            renderGallery(typeFilter.value);
+            renderGallery(typeFilter.value, searchInput.value);
         });
 
-        //renderGallery(); // Initial display
+        searchInput.addEventListener('input', () => {
+            renderGallery(typeFilter.value, searchInput.value);
+        });
 
-        // Helper to get filter from URL
-        function getFilterFromPath() {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('filter') || 'all';
-        }
-
-        // Apply filter from path if exists
-        const initialFilter = getFilterFromPath();
-
-        // Wait for dropdown to be populated before setting value
+        // Initial load
+        const initialFilter = new URLSearchParams(window.location.search).get('filter') || 'all';
         typeFilter.value = initialFilter;
         renderGallery(initialFilter);
     })
