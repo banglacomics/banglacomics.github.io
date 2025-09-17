@@ -6,6 +6,7 @@ fetch('../data/cc_data')
         const gallery = document.getElementById('gallery');
         const typeFilter = document.getElementById('typeFilter');
         const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
         const modal = document.getElementById('modal');
         const closeModal = document.getElementById('closeModal');
         const modalImg = document.getElementById('modalImg');
@@ -35,7 +36,7 @@ fetch('../data/cc_data')
                     item.type.split(',').map(t => t.trim()).includes(filter)
                   );
 
-            // Apply search filter (check in title + story)
+            // Apply search filter
             if (searchTerm) {
                 const term = searchTerm.toLowerCase();
                 filteredData = filteredData.filter(item =>
@@ -95,11 +96,13 @@ fetch('../data/cc_data')
             if (e.target == modal) modal.style.display = 'none';
         };
 
+        // Filter change
         typeFilter.addEventListener('change', () => {
             renderGallery(typeFilter.value, searchInput.value);
         });
 
-        searchInput.addEventListener('input', () => {
+        // Search button click
+        searchButton.addEventListener('click', () => {
             renderGallery(typeFilter.value, searchInput.value);
         });
 
