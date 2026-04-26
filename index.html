@@ -1,28 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-B5ZZVZF96W"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-B5ZZVZF96W');
-</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>বাংলা কমিক্স ডেটাবেস</title>
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@400..800&family=Hind+Siliguri:wght@300;400;500;600;700&family=Noto+Sans+Bengali:wght@100..900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./css/styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <header class="banner">
-        <h1 style="margin-block-end: 0.3em; margin-block-start: 0.3em;">বাংলা কমিক্স ডেটাবেস</h1>
-    </header>
-    <div class="gallery" id="gallery"></div>
+    <main class="publisher-shell">
+        <section class="publisher-hero">
+            <div class="publisher-hero-panel">
+                <p class="publisher-kicker" lang="bn">বাংলা কমিক্স ডেটাবেস</p>
+               <!-- <h1 class="publisher-title" lang="bn">প্রকাশক বেছে নিন</h1>
+                <p class="publisher-subtitle" lang="bn">বাংলা কমিক্সের বিভিন্ন প্রকাশকের আলাদা সংগ্রহে ঢোকার জন্য নিচের কার্ডগুলো ব্যবহার করুন। প্রতিটি প্রকাশকের জন্য আলাদা পেজ রাখা হয়েছে, যাতে খোঁজা ও ব্রাউজ করা সহজ হয়।</p>
+                <div class="publisher-hero-meta" lang="bn">
+                    <span class="publisher-hero-chip">আলাদা প্রকাশক পেজ</span>
+                    <span class="publisher-hero-chip">চরিত্রভিত্তিক ফিল্টার</span>
+                    <span class="publisher-hero-chip">কমিক্স আর্কাইভ</span>
+                </div> -->
+            </div>
+        </section>
 
-    <script src="./js/script.js"></script>
+        <section class="publisher-grid" id="publisherGrid"></section>
+    </main>
+
+    <script src="js/publisher-data.js"></script>
+    <script src="js/publishers.js"></script>
 </body>
 </html>
-
