@@ -108,7 +108,7 @@ function renderGrid() {
     paginated.forEach(comic => {
         grid.innerHTML += `
             <div class="comic-card rounded-2xl overflow-hidden cursor-pointer" onclick="showDetails(${comic.id})">
-                <div class="aspect-[2/3] overflow-hidden bg-slate-800">
+                <div class="aspect-[3/4] overflow-hidden bg-slate-800">
                     <img src="${comic.coverThumb}" class="w-full h-full object-cover" alt="${comic.title}" onerror="this.src='https://via.placeholder.com/300x450?text=No+Image'">
                 </div>
                 <div class="p-4">
