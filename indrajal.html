@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<title>কমিক্স সংগ্রহ</title>
+
+<style>
+:root{
+--primary:#4f46e5;--secondary:#7c3aed;--bg:#eef2ff;--card:#ffffff;
+--text:#1f2937;--muted:#6b7280;--border:#e5e7eb;
+}
+*{box-sizing:border-box}
+body{
+margin:0;
+font-family:Inter,"Noto Sans Bengali","Hind Siliguri",Arial,sans-serif;
+background:linear-gradient(135deg,#eef2ff,#f8fafc 60%,#ffffff);
+color:var(--text);
+margin:20px;
+font-size:1.2em;
+}
+h1{
+max-width:1200px;
+margin:30px auto 20px;
+padding:0 20px;
+font-size:2.2rem;
+font-weight:700;
+text-align:center;
+}
+.accordion{
+max-width:1200px;
+margin:20px auto 50px;
+padding:0 20px;
+}
+#searchBox{
+display:block!important;
+width:100%!important;
+max-width:1200px!important;
+margin:0 auto 24px!important;
+padding:16px 20px!important;
+font-size:17px!important;
+border:1px solid var(--border);
+border-radius:16px;
+outline:none;
+background:#fff;
+box-shadow:0 8px 24px rgba(0,0,0,.08);
+transition:.25s;
+}
+#searchBox:focus{
+border-color:var(--primary);
+box-shadow:0 0 0 4px rgba(79,70,229,.15);
+}
+.publisher,.type{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:16px 20px;
+border-radius:14px;
+margin-top:14px;
+cursor:pointer;
+transition:.25s;
+user-select:none;
+box-shadow:0 8px 18px rgba(0,0,0,.08);
+}
+.publisher{
+background:linear-gradient(135deg,var(--primary),var(--secondary));
+color:#fff;
+font-size:1.6em;
+font-weight:700;
+}
+.publisher:hover,.type:hover{
+transform:translateY(-2px);
+}
+.type{
+background:#d5d8ff;
+color:#27292d;
+border:1px solid var(--border);
+font-weight:600;
+font-size:1.4em;
+}
+.content{
+display:none;
+background:#fff;
+border-radius:0 0 16px 16px;
+padding:18px;
+margin-bottom:16px;
+box-shadow:0 10px 24px rgba(0,0,0,.08);
+overflow:auto;
+}
+table{
+width:100%;
+border-collapse:collapse;
+overflow:hidden;
+border-radius:12px;
+}
+th{
+background:#eef2ff;
+position:sticky;
+top:0;
+}
+th,td{
+padding:12px 14px;
+border-bottom:1px solid var(--border);
+}
+tr:nth-child(even){background:#fafafa}
+tr:hover{background:#eef4ff}
+.empty{color:var(--muted);font-style:italic}
+@media(max-width:768px){
+h1{font-size:1.6rem}
+th,td{font-size:.92rem;padding:10px}
+}
+</style>
+</head>
+
+<body>
+
+<div style="max-width:1200px;margin:auto;padding:20px;">
+<h1> কমিক্স সংগ্রহ</h1>
+<p style="margin-top:-8px;color:#6b7280;font-size:1.05rem;text-align:center;"> ব্যক্তিগত বাংলা কমিক্স সংগ্রহ ।</p>
+</div>
+
+<input
+type="text"
+id="searchBox"
+placeholder="নাম দিয়ে খুঁজুন..."
+style="
+width:100%;
+max-width:900px;
+display:block;
+margin:0 auto 20px auto;
+padding:10px;
+font-size:16px;
+"
+/>
+
+<div class="accordion" id="accordion"></div>
+
+
+<script>
+
+const data = [
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-11","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-13","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-18","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-19","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-25","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-27","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-28","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-29","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-31","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-39","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-48","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-51","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-52","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-53","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-55","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-56","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-58","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-59","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-60","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-61","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-62","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-64","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-65","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-66","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-67","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-68","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-69","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-70","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-71","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-72","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-73","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-74","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-75","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-76","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-77","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-78","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-79","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-80","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-81","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-82","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-83","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-84","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-85","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-86","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-87","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-88","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-89","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-90","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-91","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-92","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-93","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-94","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-95","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-96","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-97","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-98","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-99","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"1-100","name":"সংখ্যা-100","format":"Normal"},
+
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-103","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-104","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-106","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-107","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-108","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-109","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-110","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-111","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-112","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-114","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-115","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-116","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-117","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-118","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-122","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-124","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-125","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-127","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-128","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-130","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-131","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-132","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-133","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-134","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-135","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-136","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-140","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-143","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-146","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-147","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-151","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-152","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-154","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-158","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-159","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-160","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-161","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-162","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-163","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-164","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-166","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-167","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-169","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-170","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-171","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-172","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-173","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-174","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-177","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-178","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-179","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-182","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-183","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-184","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-186","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-188","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-189","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-190","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-191","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-192","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-193","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-194","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-195","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-197","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-198","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-199","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"101-200","name":"সংখ্যা-200","format":"Normal"},
+
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-204","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-205","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-208","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-209","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-210","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-211","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-214","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-217","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-218","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-219","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-220","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-221","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-222","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-223","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-225","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-227","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-228","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-229","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-232","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-233","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-234","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-236","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-239","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-242","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-243","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-244","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-245","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-246","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-251","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-255","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-258","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-260","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-262","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-263","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-264","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-265","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-266","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-267","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-268","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-269","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-270","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-272","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-273","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-274","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-275","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-276","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-278","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-279","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-280","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-281","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-282","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-283","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-284","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-285","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-286","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-287","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-288","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-289","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-291","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-293","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-294","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-295","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-296","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-297","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-299","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"201-300","name":"সংখ্যা-300","format":"Normal"},
+
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-301","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-302","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-305","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-306","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-307","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-308","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-309","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-310","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-311","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-312","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-313","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-314","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-315","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-316","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-317","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-318","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-319","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-320","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-321","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-322","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-323","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-324","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-325","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-326","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-327","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-329","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-330","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-331","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-332","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-334","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-335","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-336","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-337","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-338","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-339","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-340","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-341","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-342","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-343","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-344","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-345","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-346","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-347","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-348","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-349","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-350","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-351","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-352","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-353","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-354","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-355","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-356","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-357","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-358","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-359","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-360","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-361","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-362","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-363","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-364","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-365","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-366","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-367","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-368","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-369","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-370","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-371","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-372","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-373","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-374","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-375","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-376","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-377","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-378","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-379","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-380","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-381","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-382","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-383","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-384","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-385","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-387","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-388","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-389","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-390","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-391","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-393","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-394","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-395","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-396","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-397","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-398","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-399","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-400","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-401","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-402","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-403","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-404","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-407","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-408","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-409","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-410","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-411","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-412","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-413","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-414","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-415","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-416","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-417","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-418","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-419","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"301-420","name":"সংখ্যা-420","format":"Binding"},
+
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-01","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-02","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-03","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-05","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-08","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-09","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-11","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-12","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-13","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-14","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-15","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-16","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-17","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-18","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-19","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-21","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-23","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-25","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-26","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-30","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-31","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-32","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-33","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-34","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-35","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-36","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-37","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-38","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-39","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-40","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-41","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-42","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-43","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-44","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-45","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-46","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-47","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-48","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-49","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-50","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-51","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 20","name":"খন্ড 20, সংখ্যা-52","format":"Normal"},
+
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-01","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-02","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-03","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-04","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-05","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-06","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-07","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-08","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-09","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-10","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-11","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-12","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-13","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-14","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-15","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-16","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-18","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-19","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-20","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-21","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-23","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-24","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-25","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-26","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-27","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-28","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-29","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-30","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-31","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-32","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-33","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-34","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-35","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-36","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-37","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-38","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-39","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-40","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-41","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-42","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-43","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-44","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-45","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-50","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-51","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-52","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 21","name":"খন্ড 21, সংখ্যা-53","format":"Normal"},
+
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-01","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-02","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-03","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-04","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-05","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-06","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-07","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-08","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-09","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-10","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-11","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-13","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-15","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-16","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-17","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-18","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-19","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-21","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-22","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-23","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-24","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-25","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-26","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-27","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-29","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-32","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-33","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-34","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-35","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-36","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-37","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-39","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-42","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-44","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-49","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 22","name":"খন্ড 22, সংখ্যা-51","format":"Binding"},
+
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-01","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-03","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-04","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-05","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-07","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-08","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-09","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-10","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-11","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-13","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-14","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-15","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-16","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-19","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-22","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-23","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-24","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-26","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-27","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-28","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-34","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-37","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-41","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-43","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-44","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-46","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-47","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-48","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-50","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-51","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 23","name":"খন্ড 23, সংখ্যা-52","format":"Normal"},
+
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-02","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-03","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-04","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-06","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-07","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-09","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-10","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-11","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-13","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-14","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-15","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-16","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-18","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-19","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-21","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-22","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-23","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-24","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-25","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-26","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-27","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-28","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-29","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-30","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-31","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-32","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-33","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-34","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-35","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-36","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-38","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-39","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-40","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-41","format":"Binding"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-42","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-44","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-45","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-46","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-47","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-50","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 24","name":"খন্ড 24, সংখ্যা-52","format":"Normal"},
+
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-01","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-02","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-03","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-04","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-05","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-06","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-07","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-08","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-09","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-10","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-11","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-12","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-13","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-14","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-15","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-16","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-17","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-18","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-19","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-21","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-22","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-24","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-25","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-27","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-28","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-29","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-30","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-31","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-32","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-33","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-34","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-35","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-36","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-37","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-38","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-39","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-40","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-41","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-42","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-43","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-44","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-47","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-48","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-49","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-50","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-51","format":"Mint"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 25","name":"খন্ড 25, সংখ্যা-52","format":"Mint"},
+
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 26","name":"খন্ড 26, সংখ্যা-01","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 26","name":"খন্ড 26, সংখ্যা-03","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 26","name":"খন্ড 26, সংখ্যা-04","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 26","name":"খন্ড 26, সংখ্যা-05","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 26","name":"খন্ড 26, সংখ্যা-06","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 26","name":"খন্ড 26, সংখ্যা-07","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 26","name":"খন্ড 26, সংখ্যা-09","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 26","name":"খন্ড 26, সংখ্যা-10","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 26","name":"খন্ড 26, সংখ্যা-13","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 26","name":"খন্ড 26, সংখ্যা-14","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 26","name":"খন্ড 26, সংখ্যা-15","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 26","name":"খন্ড 26, সংখ্যা-16","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 26","name":"খন্ড 26, সংখ্যা-18","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 26","name":"খন্ড 26, সংখ্যা-20","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 26","name":"খন্ড 26, সংখ্যা-21","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 26","name":"খন্ড 26, সংখ্যা-22","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 26","name":"খন্ড 26, সংখ্যা-24","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 26","name":"খন্ড 26, সংখ্যা-25","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 26","name":"খন্ড 26, সংখ্যা-26","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 26","name":"খন্ড 26, সংখ্যা-28","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 26","name":"খন্ড 26, সংখ্যা-29","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 26","name":"খন্ড 26, সংখ্যা-30","format":"Normal"},
+{"publisher":"ইন্দ্রজাল কমিক্স","type":"খন্ড 26","name":"খন্ড 26, সংখ্যা-40","format":"Normal"}
+];
+
+
+
+function groupData(data){
+
+const grouped = {};
+
+data.forEach(item => {
+
+if(!grouped[item.publisher]){
+grouped[item.publisher] = {
+types:{},
+directRows:[],
+nameSet:new Set()
+};
+}
+
+grouped[item.publisher].nameSet.add(item.name.trim());
+
+if(!item.type || item.type.trim()===""){
+grouped[item.publisher].directRows.push(item);
+return;
+}
+
+if(!grouped[item.publisher].types[item.type]){
+grouped[item.publisher].types[item.type]={
+rows:[],
+nameSet:new Set()
+};
+}
+
+grouped[item.publisher].types[item.type].rows.push(item);
+grouped[item.publisher].types[item.type].nameSet.add(item.name.trim());
+
+});
+
+return grouped;
+
+}
+
+
+
+const accordion = document.getElementById("accordion");
+const searchBox = document.getElementById("searchBox");
+
+
+
+function render(filteredData){
+
+accordion.innerHTML="";
+
+const grouped = groupData(filteredData);
+
+Object.keys(grouped).forEach(publisher => {
+
+const publisherCount = grouped[publisher].nameSet.size;
+
+const publisherHeader = document.createElement("div");
+publisherHeader.className="publisher";
+publisherHeader.textContent = publisher + " (" + publisherCount + ")";
+
+const publisherContent = document.createElement("div");
+publisherContent.className="content";
+
+
+/* rows with no type */
+
+if(grouped[publisher].directRows.length>0){
+
+let table = `
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Grade</th>
+</tr>
+</thead>
+<tbody>
+`;
+
+grouped[publisher].directRows.forEach(row => {
+
+table += `
+<tr>
+<td>${row.name}</td>
+<td>${row.format ? row.format : '<span class="empty">—</span>'}</td>
+</tr>
+`;
+
+});
+
+table += "</tbody></table>";
+
+const directContent = document.createElement("div");
+directContent.innerHTML = table;
+
+publisherContent.appendChild(directContent);
+
+}
+
+
+
+/* types */
+
+Object.keys(grouped[publisher].types).forEach(type => {
+
+const typeHeader = document.createElement("div");
+typeHeader.className="type";
+
+const distinctCount = grouped[publisher].types[type].nameSet.size;
+
+typeHeader.textContent = type + " (" + distinctCount + ")";
+
+const typeContent = document.createElement("div");
+typeContent.className="content";
+
+let table = `
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Grade</th>
+</tr>
+</thead>
+<tbody>
+`;
+
+grouped[publisher].types[type].rows.forEach(row => {
+
+table += `
+<tr>
+<td>${row.name}</td>
+<td>${row.format ? row.format : '<span class="empty">—</span>'}</td>
+</tr>
+`;
+
+});
+
+table += "</tbody></table>";
+
+typeContent.innerHTML = table;
+
+typeHeader.onclick = function(){
+typeContent.style.display =
+typeContent.style.display==="block" ? "none":"block";
+};
+
+publisherContent.appendChild(typeHeader);
+publisherContent.appendChild(typeContent);
+
+});
+
+
+publisherHeader.onclick = function(){
+publisherContent.style.display =
+publisherContent.style.display==="block" ? "none":"block";
+};
+
+accordion.appendChild(publisherHeader);
+accordion.appendChild(publisherContent);
+
+});
+
+}
+
+
+
+render(data);
+
+
+
+searchBox.addEventListener("input",function(){
+
+const query = this.value.trim().toLowerCase();
+
+if(!query){
+render(data);
+return;
+}
+
+const filtered = data.filter(item =>
+item.name.toLowerCase().includes(query)
+);
+
+render(filtered);
+
+});
+
+</script>
+
+</body>
+</html>
+
